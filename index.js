@@ -1,30 +1,11 @@
 'use strict';
 
+const path = require('path');
 const fs = require('fs');
+const callsite = require('callsite');
 const watch = require('node-watch');
-
 const UglifyJS = require('uglify-es');
 const UglifyCSS = require('node-sass');
-
-/**
- * Listens, reads, mingles and writes incoming JS and SCSS/CSS files to a unique output file.
- * 
- * @param {Object} config 
- */
-function watchAll(config) {
-  config = Object.assign({}, { css: { output: null, input: [], options: {} }, js: { output: null, input: [], options: {} } }, config);
-  const promises = [];
-  
-  if (config.css && config.css.output) {
-    promises.push(watchCSS(config.css.output, config.css.input, config.css.options));
-  }
-
-  if (config.js && config.js.output) {
-    promises.push(watchJS(config.js.output, config.js.input, config.js.options));
-  }
-
-  return Promise.all(promises);
-}
 
 /**
  * Listens, reads, mingles and writes incoming SCSS/CSS files to a unique output file.
@@ -34,6 +15,11 @@ function watchAll(config) {
  * @param {Object=} options https://www.npmjs.com/package/node-sass#options
  */
 function watchCSS (output, input, options) {
+  const dirname = path.dirname(callsite()[1].getFileName());
+  output = dirname + (output.charAt(0) === '/' ? output : '/' + output);
+  input = (input || []).map(function (path) {
+    return dirname + (path.charAt(0) === '/' ? path : '/' + path);
+  });
   options = Object.assign({
     outputStyle: 'compressed'
   }, options || {});
@@ -44,7 +30,7 @@ function watchCSS (output, input, options) {
 
   return new Promise(function (resolve) {
     console.log('Tasky > Listening SCSS/CSS...');
-    (input || []).forEach(function (path) {
+    input.forEach(function (path) {
       watch(path, function () {
         runCSS(function (err, code) {
           resolve({err, code});
@@ -88,6 +74,11 @@ function watchCSS (output, input, options) {
  * @param {Object=} options https://www.npmjs.com/package/uglify-es#minify-options
  */
 function watchJS (output, input, options) {
+  const dirname = path.dirname(callsite()[1].getFileName());
+  output = dirname + (output.charAt(0) === '/' ? output : '/' + output);
+  input = (input || []).map(function (path) {
+    return dirname + (path.charAt(0) === '/' ? path : '/' + path);
+  });
   options = Object.assign({
     toplevel: false,
     mangle: false,
@@ -103,7 +94,7 @@ function watchJS (output, input, options) {
 
   return new Promise(function (resolve) {
     console.log('Tasky > Listening JS...');
-    (input || []).forEach(function (path) {
+    input.forEach(function (path) {
       watch(path, function () {
         runJS(function (err, code) {
           resolve({err, code});
@@ -164,7 +155,6 @@ function readFiles(input) {
 }
 
 module.exports = {
-  watchAll,
   watchCSS,
   watchJS
 };
