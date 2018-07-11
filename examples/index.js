@@ -1,6 +1,6 @@
 'use strict';
 
-const tasky = require('./../index'); // require('node-tasker');
+const tasky = require('./../index'); // require('node-tasky');
 
 const config = {
   css: {

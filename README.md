@@ -5,7 +5,7 @@ A simple JS (with Uglify) and SCSS/CSS (with node-sass) compiler and minifier.
 ## Installation
 
 ``` sh
-npm i -D node-tasker
+npm i -D node-tasky
 ```
 
 ## Documentation
@@ -21,7 +21,7 @@ npm i -D node-tasker
 ## Usage
 
 ```javascript
-const tasky = require('node-tasker');
+const tasky = require('node-tasky');
 
 tasky.watchJS('dist/scripts.min.js', [
   'assets/js/file1.js',
