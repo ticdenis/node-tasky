@@ -1,0 +1,17 @@
+{
+  "name": "tasky",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "watch": "node examples",
+    "watch:js": "node examples js",
+    "watch:css": "node examples css"
+  },
+  "author": "Denís Navarro Alcaide",
+  "license": "MIT",
+  "devDependencies": {
+    "node-sass": "^4.9.2",
+    "node-watch": "^0.5.8",
+    "uglify-es": "^3.3.9"
+  }
+}
