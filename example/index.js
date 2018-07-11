@@ -4,20 +4,20 @@ const tasky = require('./../index'); // require('node-tasky');
 
 const config = {
   css: {
-    output: 'examples/dist/styles.min.css',
+    output: `${__dirname}/dist/styles.min.css`,
     input: [
-      'examples/assets/scss/file1.scss',
-      'examples/assets/scss/file2.scss',
-      'examples/assets/css/file1.css',
-      'examples/assets/css/file2.css'
+      `${__dirname}/assets/scss/file1.scss`,
+      `${__dirname}/assets/scss/file2.scss`,
+      `${__dirname}/assets/css/file1.css`,
+      `${__dirname}/assets/css/file2.css`
     ]
   },
   js: {
-    output: 'examples/dist/scripts.min.js',
+    output: `${__dirname}/dist/scripts.min.js`,
     input: [
-      'examples/assets/js/file1.js',
-      'examples/assets/js/file2.js',
-      'examples/assets/js/file3.js'
+      `${__dirname}/assets/js/file1.js`,
+      `${__dirname}/assets/js/file2.js`,
+      `${__dirname}/assets/js/file3.js`
     ]
   }
 };

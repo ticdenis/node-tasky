@@ -1,6 +1,6 @@
-# Tasker
+# Tasky
 
-A simple JS (with Uglify) and SCSS/CSS (with node-sass) compiler and minifier.
+A simple JS (with [uglify-es](https://www.npmjs.com/package/uglify-es#minify-options)) and SCSS/CSS (with [node-sass](https://www.npmjs.com/package/node-sass#options)) compiler and minifier.
 
 ## Installation
 
@@ -23,20 +23,20 @@ npm i -D node-tasky
 ```javascript
 const tasky = require('node-tasky');
 
-tasky.watchJS('dist/scripts.min.js', [
-  'assets/js/file1.js',
-  'assets/js/file2.js',
-  'assets/js/file3.js'
+tasky.watchJS(`${__dirname}/dist/scripts.min.js`, [
+  `${__dirname}/assets/js/file1.js`,
+  `${__dirname}/assets/js/file2.js`,
+  `${__dirname}/assets/js/file3.js`
 ]).then((err, code) => console.log('JS response', { err, code }));
 
-tasky.watchCSS('dist/styles.min.css', [
-  'assets/scss/file1.scss',
-  'assets/scss/file2.scss',
-  'assets/css/file1.css',
-  'assets/css/file2.css'
+tasky.watchCSS(`${__dirname}/dist/styles.min.css`, [
+  `${__dirname}/assets/scss/file1.scss`,
+  `${__dirname}/assets/scss/file2.scss`,
+  `${__dirname}/assets/css/file1.css`,
+  `${__dirname}/assets/css/file2.css`
 ]).then((err, code) => console.log('CSS response', { err, code });
 ```
 
 ## License
 
-[MIT](https://github.com/ticdenis/tasky/blob/master/LICENSE)
+[MIT](https://github.com/ticdenis/node-tasky/blob/master/LICENSE)

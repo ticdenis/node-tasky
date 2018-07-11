@@ -1,11 +1,25 @@
 {
   "name": "node-tasky",
-  "version": "1.0.0",
+  "description": "A simple JS (with uglify-es) and SCSS/CSS (with node-sass) compiler and minifier.",
+  "version": "1.1.0",
   "main": "index.js",
+  "keywords": [
+    "task",
+    "tasky",
+    "tasker",
+    "compile js",
+    "compile scss",
+    "minify js",
+    "minify css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ticdenis/node-tasky.git"
+  },
   "scripts": {
-    "watch": "node examples",
-    "watch:js": "node examples js",
-    "watch:css": "node examples css"
+    "watch": "node example",
+    "watch:js": "node example js",
+    "watch:css": "node example css"
   },
   "private": false,
   "author": "Denís Navarro Alcaide",
