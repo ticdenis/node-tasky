@@ -1,160 +1,92 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
 const callsite = require('callsite');
-const watch = require('node-watch');
-const UglifyJS = require('uglify-es');
-const UglifyCSS = require('node-sass');
+const path = require('path');
 
-/**
- * Listens, reads, mingles and writes incoming SCSS/CSS files to a unique output file.
- * 
- * @param {String} output Path of the resulting file
- * @param {Array<String>=} input Relative path of files
- * @param {Object=} options https://www.npmjs.com/package/node-sass#options
- */
-function watchCSS (output, input, options) {
-  const dirname = path.dirname(callsite()[1].getFileName());
-  output = dirname + (output.charAt(0) === '/' ? output : '/' + output);
-  input = (input || []).map(function (path) {
-    return dirname + (path.charAt(0) === '/' ? path : '/' + path);
-  });
-  options = Object.assign({
-    outputStyle: 'compressed'
-  }, options || {});
+const {
+  arrange, listen, read, translate, minify, write
+} = require('./lib');
 
-  runCSS(function (err) {
-    if (err) throw err;
-  });
+class Tasky {
 
-  return new Promise(function (resolve) {
-    console.log('Tasky > Listening SCSS/CSS...');
-    input.forEach(function (path) {
-      watch(path, function () {
-        runCSS(function (err, code) {
-          resolve({err, code});
+  /**
+   * A simple JS and SCSS/CSS compiler and minifier.
+   */
+  constructor() {
+    this.arrange = arrange;
+    this.listen = listen;
+    this.read = read;
+    this.translate = translate;
+    this.minify = minify;
+    this.write = write;
+  }
+
+  /**
+   * Arrange, Listen, Read, Translate, Minify and Write LESS/SCSS/CSS or TS/JS input files to a unique output file.
+   * 
+   * LESS and TS not avaiable.
+   * 
+   * @param {String} output
+   * @param {Array<String>} input
+   * @param {Object=} options
+   * @param {String} mode CSS or JS
+   */
+  async run(output, input, options, mode) {
+    const self = this;
+    // Sanitize falsy args
+    output = output || [];
+    input = input || [];
+    options = options || {};
+    // Execute
+    console.log('Tasky > ' + mode + ' > Arrange...');
+    self.arrange(output, input, options, self.dirname).then(function (arrangeResult) {
+      console.log('Tasky > ' + mode + ' > Listen...');
+      self.listen(arrangeResult, function (listenResult) {
+        console.log('Tasky > ' + mode + ' > Read...');
+        return self.read(listenResult).then(function (readResult) {
+          console.log('Tasky > ' + mode + ' > Translate...');
+          return self.translate(readResult).then(function (translateResult) {
+            console.log('Tasky > ' + mode + ' > Minify...');
+            return self.minify(translateResult).then(function (minifyResult) {
+              console.log('Tasky > ' + mode + ' > Write...');
+              self.write(minifyResult, function () {
+                console.log('Tasky > ' + mode + ' > OK!');
+              });
+            })
+          });
         });
-      })
-    });
-  });
-
-  /**
-   * Reads, Minify and Writes the input SCSS/CSS files to the output CSS file.
-   * 
-   * @param {Function=} fn 
-   */
-  function runCSS(fn) {
-    fn = fn || function () {};
-    const cssReaded = readFiles(input);
-    const cssMinified = minifyCSS(cssReaded, options);
-    writeFile(output, cssMinified, function (err) {
-      if (err) return fn(err, null);
-      console.log('Tasky > SCSS/CSS compiled!');
-      fn(null, cssMinified.code);
+      });
     });
   }
 
   /**
-   * Minify the content of incoming SCSS/CSS files.
+   * Arrange, Listen, Read, Translate, Minify and Write SCSS/CSS input files to a unique output file.
    * 
-   * @param {String?} content 
-   * @param {Object?} options 
-   */
-  function minifyCSS(content, options) {
-    return UglifyCSS.renderSync(Object.assign({ data: content || '' }, options)).css || '';
-  }
-}
-
-/**
- * Listens, reads, mingles and writes incoming JavaScript files to a unique output file.
- * 
- * @param {String} output Path of the resulting file
- * @param {Array<String>=} input Relative path of files
- * @param {Object=} options https://www.npmjs.com/package/uglify-es#minify-options
- */
-function watchJS (output, input, options) {
-  const dirname = path.dirname(callsite()[1].getFileName());
-  output = dirname + (output.charAt(0) === '/' ? output : '/' + output);
-  input = (input || []).map(function (path) {
-    return dirname + (path.charAt(0) === '/' ? path : '/' + path);
-  });
-  options = Object.assign({
-    toplevel: false,
-    mangle: false,
-    ie8: true,
-    compress: {
-      sequences: false
-    }
-  }, options || {});
-
-  runJS(function (err) {
-    if (err) throw err;
-  });
-
-  return new Promise(function (resolve) {
-    console.log('Tasky > Listening JS...');
-    input.forEach(function (path) {
-      watch(path, function () {
-        runJS(function (err, code) {
-          resolve({err, code});
-        });
-      })
-    });
-  });
-
-  /**
-   * Reads, Minify and Writes the input JavaScript files to the output JavaScript file.
+   * LESS not avaiable.
    * 
-   * @param {Function=} fn 
+   * @param {String} output
+   * @param {Array<String>} input
+   * @param {Object=} options https://www.npmjs.com/package/node-sass#options
    */
-  function runJS(fn) {
-    fn = fn || function () {};
-    const jsReaded = readFiles(input);
-    const jsMinified = minifyJS(jsReaded, options);
-    writeFile(output, jsMinified, function (err) {
-      if (err) return fn(err, null);
-      console.log('Tasky > JS compiled!');
-      fn(null, jsMinified.code);
-    });
+  watchCSS(output, input, options) {
+    this.dirname = path.dirname(callsite()[1].getFileName());
+    this.run(output, input, options, 'CSS');
   }
 
   /**
-   * Minify the content of incoming JavaScript files.
+   * Arrange, Listen, Read, Translate, Minify and Write JS input files to a unique output file.
    * 
-   * @param {String?} content 
-   * @param {Object?} options 
+   * TypeScript not avaiable.
+   * 
+   * @param {String} output
+   * @param {Array<String>} input
+   * @param {Object=} options https://www.npmjs.com/package/uglify-es#minify-options
    */
-  function minifyJS(content, options) {
-    return UglifyJS.minify(content || '', options).code || '';
+  watchJS(output, input, options) {
+    this.dirname = path.dirname(callsite()[1].getFileName());
+    this.run(output, input, options, 'JS');
   }
+
 }
 
-/**
- * Write the content to the output file.
- * 
- * @param {String} output 
- * @param {String=} content 
- * @param {Function=} fn 
- */
-function writeFile(output, content, fn) {
-  fs.truncate(output, 0, function () {
-    fs.writeFile(output, content || '', fn || function () {});
-  });
-}
-
-/**
- * Reads and joins the contents of the input files.
- * 
- * @param {Array<String>} input 
- */
-function readFiles(input) {
-  return input.map(function (file) {
-    return fs.readFileSync(file, 'utf8');
-  }).join(' ') || '';
-}
-
-module.exports = {
-  watchCSS,
-  watchJS
-};
+module.exports = new Tasky();

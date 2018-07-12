@@ -12,11 +12,11 @@ npm i -D node-tasky
 
 - Compile and minify **JS**.
 
-  `watchJS(output: string, input?: string[], options?: Object): Promise;`
+  `watchJS(output: string, input?: string[], options?: Object): void;`
 
 - Compile and minify **SCSS/CSS**.
 
-  `watchCSS(output: string, input?: string[], options?: Object): Promise;`
+  `watchCSS(output: string, input?: string[], options?: Object): void;`
 
 ## Usage
 
@@ -47,11 +47,7 @@ tasky.watchCSS('dist/styles.min.css', [
 
 - TS to ES5 with [TypeScript](https://github.com/Microsoft/TypeScript).
 
-- Test with [AVA](https://github.com/avajs/ava) and [Sinon](https://github.com/sinonjs/sinon).
-
 - Support for multiples outputs, inputs and options.
-
-- Refactor and DI.
 
 ## License
 
