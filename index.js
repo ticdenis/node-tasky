@@ -10,7 +10,7 @@ const {
 class Tasky {
 
   /**
-   * A simple JS and SCSS/CSS compiler and minifier.
+   * A simple JS and LESS/SCSS/CSS compiler and minifier.
    */
   constructor() {
     this.arrange = arrange;
@@ -24,7 +24,7 @@ class Tasky {
   /**
    * Arrange, Listen, Read, Translate, Minify and Write LESS/SCSS/CSS or TS/JS input files to a unique output file.
    * 
-   * LESS and TS not avaiable.
+   * TS not avaiable.
    * 
    * @param {String} output
    * @param {Array<String>} input
@@ -60,13 +60,11 @@ class Tasky {
   }
 
   /**
-   * Arrange, Listen, Read, Translate, Minify and Write SCSS/CSS input files to a unique output file.
-   * 
-   * LESS not avaiable.
+   * Arrange, Listen, Read, Translate, Minify and Write LESS/SCSS/CSS input files to a unique output file.
    * 
    * @param {String} output
    * @param {Array<String>} input
-   * @param {Object=} options https://www.npmjs.com/package/node-sass#options
+   * @param {Object=} options https://www.npmjs.com/package/node-sass#options and http://lesscss.org/usage/#less-options
    */
   watchCSS(output, input, options) {
     this.dirname = path.dirname(callsite()[1].getFileName());

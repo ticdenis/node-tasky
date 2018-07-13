@@ -1,6 +1,6 @@
 # Tasky
 
-A simple JS (with [uglify-es](https://www.npmjs.com/package/uglify-es#minify-options)) and SCSS/CSS (with [node-sass](https://www.npmjs.com/package/node-sass#options)) compiler and minifier.
+A simple JS and LESS/SCSS/CSS compiler and minifier.
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm i -D node-tasky
 
   `watchJS(output: string, input?: string[], options?: Object): void;`
 
-- Compile and minify **SCSS/CSS**.
+- Compile and minify **LESS/SCSS/CSS**.
 
   `watchCSS(output: string, input?: string[], options?: Object): void;`
 
@@ -30,6 +30,7 @@ tasky.watchJS('dist/scripts.min.js', [
 ]);
 
 tasky.watchCSS('dist/styles.min.css', [
+  'assets/less/file1.less',
   'assets/scss/file1.scss',
   'assets/scss/file2.scss',
   'assets/css/file1.css',
@@ -40,8 +41,6 @@ tasky.watchCSS('dist/styles.min.css', [
 ## In progress
 
 - Minify HTML.
-
-- LESS to CSS with [LESS](https://www.npmjs.com/package/less).
 
 - JS ES6/ES7 to ES5 with [Babel](https://github.com/babel/babel).
 

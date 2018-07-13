@@ -1,7 +1,7 @@
 {
   "name": "node-tasky",
-  "description": "A simple JS (with uglify-es) and SCSS/CSS (with node-sass) compiler and minifier.",
-  "version": "1.3.0",
+  "description": "A simple JS and LESS/SCSS/CSS compiler and minifier.",
+  "version": "1.4.0",
   "main": "index.js",
   "keywords": [
     "task",
@@ -9,6 +9,7 @@
     "tasker",
     "compile js",
     "compile scss",
+    "compile less",
     "minify js",
     "minify css"
   ],
@@ -16,16 +17,12 @@
     "type": "git",
     "url": "https://github.com/ticdenis/node-tasky.git"
   },
-  "scripts": {
-    "watch": "node example all",
-    "watch:js": "node example js",
-    "watch:css": "node example css"
-  },
   "private": false,
   "author": "Denís Navarro Alcaide",
   "license": "MIT",
   "devDependencies": {
     "callsite": "^1.0.0",
+    "less": "^3.7.1",
     "node-sass": "^4.9.2",
     "node-watch": "^0.5.8",
     "uglify-es": "^3.3.9"
