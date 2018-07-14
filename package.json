@@ -1,7 +1,7 @@
 {
   "name": "node-tasky",
   "description": "A simple JS and LESS/SCSS/CSS compiler and minifier.",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "index.js",
   "keywords": [
     "task",
@@ -20,7 +20,7 @@
   "private": false,
   "author": "Denís Navarro Alcaide",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "callsite": "^1.0.0",
     "less": "^3.7.1",
     "node-sass": "^4.9.2",
